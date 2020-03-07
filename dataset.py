@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 
-from utils import one_hot_enc
+from utils import create_adj_mat, create_deg_mat, one_hot_enc
 
 
 class Data():
@@ -10,6 +10,8 @@ class Data():
         self.config = config
         self.nodes_path = os.path.join(self.config.data_dir, 'cora.content.txt')
         self.edges_path = os.path.join(self.config.data_dir, 'cora.cites.txt')
+
+        self.load()
 
     def load(self):
         nodes = np.genfromtxt(fname=self.nodes_path, dtype=np.dtype(str))
@@ -31,7 +33,7 @@ class Data():
         for idx, pair in enumerate(edges):
             edges[idx] = [idx_ordered[pair[0]], idx_ordered[pair[1]]]
 
-        adj_mat = self.create_adj(nodes, edges)
+        adj_mat = create_adj_mat(nodes, edges)
+        adj_mat_tilde = adj_mat + np.eye(N=adj_mat.shape[0])
 
-    def create_adj(self, nodes, edges):
-        return None
+        deg_mat = create_deg_mat(adj_mat_tilde)
