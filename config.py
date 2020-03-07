@@ -6,6 +6,9 @@ def get_args():
                                    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     # Data stuff.
-    argp.add_argument('--data_dir', type=str, default='../graph_data')
+    argp.add_argument('--data_dir', type=str, default='./data/')
+
+    # Model stuff.
+    argp.add_argument('--num_hidden', type=int, default=16)
 
     return argp.parse_args()
