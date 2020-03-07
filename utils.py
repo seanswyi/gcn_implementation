@@ -1,3 +1,5 @@
+import pdb
+
 import numpy as np
 
 
@@ -27,10 +29,19 @@ def create_adj_mat(nodes, edges):
     return adj_mat
 
 
+def create_adj_hat(adj_mat):
+    adj_tilde = adj_mat + np.eye(N=adj_mat.shape[0])
+    deg_tilde = create_deg_mat(adj_tilde)
+
+    adj_hat = np.matmul(np.matmul(deg_tilde, adj_tilde), deg_tilde)
+
+    return adj_hat
+
+
 def create_deg_mat(adj_mat):
-    deg_mat = np.zeros(shape=adj_mat.shape)
+    deg_diag = adj_mat.sum(1)
+    deg_inv = np.power(deg_diag, -1)
+    deg_sqrt = np.sqrt(deg_inv)
+    deg_tilde = np.diag(deg_sqrt)
 
-    for idx, row in enumerate(adj_mat):
-        deg_mat[idx, idx] = row.sum()
-
-    return deg_mat
+    return deg_tilde
