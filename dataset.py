@@ -39,7 +39,7 @@ class Data():
         adj_hat = create_adj_hat(adj_mat)
 
         self.adj_hat = torch.tensor(adj_hat)
-        self.features = torch.tensor(features)
+        self.features = torch.FloatTensor(features)
         self.edges = torch.tensor(edges)
         self.labels = torch.tensor(np.where(labels)[1])
 
@@ -52,3 +52,6 @@ class Data():
             self.features = self.features.to('cuda')
             self.edges = self.edges.to('cuda')
             self.labels = self.labels.to('cuda')
+            self.idx_train = self.idx_train.to('cuda')
+            self.idx_valid = self.idx_valid.to('cuda')
+            self.idx_test = self.idx_test.to('cuda')
