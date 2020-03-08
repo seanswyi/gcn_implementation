@@ -1,6 +1,7 @@
 import pdb
 
 import numpy as np
+import torch
 
 
 def one_hot_enc(labels):
@@ -45,3 +46,13 @@ def create_deg_mat(adj_mat):
     deg_tilde = np.diag(deg_sqrt)
 
     return deg_tilde
+
+
+def get_optimizer(config, model):
+    params = model.parameters()
+    lr = config.lr
+
+    if config.optimizer == 'adam':
+        optimizer = torch.optim.Adam(params=params, lr=lr)
+
+    return optimizer
