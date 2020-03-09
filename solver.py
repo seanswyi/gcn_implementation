@@ -1,7 +1,5 @@
-import pdb
-
+import numpy as np
 import torch.nn as nn
-import torch.nn.functional as F
 
 from utils import accuracy, get_optimizer
 
@@ -29,6 +27,11 @@ class Solver():
         best_acc_valid = 0.0
         best_model = None
 
+        loss_train_hist = []
+        loss_valid_hist = []
+        acc_train_hist = []
+        acc_valid_hist = []
+
         for epoch in range(self.num_epochs):
             optimizer.zero_grad()
             output = self.model(self.features, self.adj_hat)
@@ -48,6 +51,11 @@ class Solver():
             acc_train = accuracy(output_train, labels_train)
             acc_valid = accuracy(output_valid, labels_valid)
 
+            loss_train_hist.append(loss_train.item())
+            loss_valid_hist.append(loss_valid)
+            acc_train_hist.append(acc_train)
+            acc_valid_hist.append(acc_valid)
+
             if acc_valid > best_acc_valid:
                 best_acc_valid = acc_valid
                 best_model = self.model
@@ -56,6 +64,17 @@ class Solver():
             print('\t Training loss: {} \t Validation loss: {}'.format(loss_train.item(), loss_valid))
             print('\t Training accuracy: {} \t Validation accuracy: {}'.format(acc_train, acc_valid))
             print()
+
+        if self.config.save_results:
+            loss_train_hist = np.array(loss_train_hist)
+            loss_valid_hist = np.array(loss_valid_hist)
+            acc_train_hist = np.array(acc_train_hist)
+            acc_valid_hist = np.array(acc_valid_hist)
+
+            np.save(file='./results/loss_train_hist.npy', arr=loss_train_hist)
+            np.save(file='./results/loss_valid_hist.npy', arr=loss_valid_hist)
+            np.save(file='./results/acc_train_hist.npy', arr=acc_train_hist)
+            np.save(file='./results/acc_valid_hist.npy', arr=acc_valid_hist)
 
         return criterion, best_model
 

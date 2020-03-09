@@ -17,4 +17,7 @@ def get_args():
     argp.add_argument('--lr', type=float, default=0.01)
     argp.add_argument('--optimizer', type=str, default='adam')
 
+    # Miscellaneous.
+    argp.add_argument('--save_results', action='store_true', default=False)
+
     return argp.parse_args()
