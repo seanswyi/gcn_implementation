@@ -6,5 +6,3 @@ Official paper link: [_Semi-Supervised Classification with Graph Convolutional N
 ## Test Runs
 
 ### Cora Dataset
-
-![Figure Test](https://github.com/seankala/gcn_implementation/blob/master/figures/gcn_cora_epoch500_acc.png)
