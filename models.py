@@ -15,7 +15,7 @@ class GraphConv(nn.Module):
         x: N x C
         adj_mat: N x N
         """
-        weight_prod = torch.DoubleTensor(self.weight_mat(x))
+        weight_prod = self.weight_mat(x.float()).double()
         output = torch.matmul(adj_mat, weight_prod)
 
         return output
@@ -30,12 +30,12 @@ class GCN(nn.Module):
         self.num_features = num_features
         self.p = self.config.dropout_rate
 
-        self.gc1 = GraphConv(in_features=self.num_features, out_features=self.num_hidden)
-        self.gc2 = GraphConv(in_features=self.num_hidden, out_features=self.num_classes)
+        self.graphconv1 = GraphConv(in_features=self.num_features, out_features=self.num_hidden)
+        self.graphconv2 = GraphConv(in_features=self.num_hidden, out_features=self.num_classes)
 
     def forward(self, x, adj_hat):
-        x = F.relu(self.gc1(x, adj_hat))
+        x = F.relu(self.graphconv1(x, adj_hat))
         x = F.dropout(input=x, p=self.p, training=self.training)
-        output = F.softmax(self.gc2(x, adj_hat), dim=1)
+        output = F.log_softmax(self.graphconv2(x, adj_hat), dim=1)
 
         return output
