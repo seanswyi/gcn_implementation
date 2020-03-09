@@ -1,6 +1,7 @@
 import pdb
 
 import torch.nn as nn
+import torch.nn.functional as F
 
 from utils import get_optimizer
 
@@ -23,11 +24,9 @@ class Trainer():
         self.model.train()
 
         optimizer = get_optimizer(self.config, self.model)
-        loss_train = nn.NLLLoss()
-        loss_valid = nn.NLLLoss()
+        criterion = nn.NLLLoss()
 
         for epoch in range(self.num_epochs):
-            pdb.set_trace()
             optimizer.zero_grad()
             output = self.model(self.features, self.adj_hat)
 
@@ -36,8 +35,13 @@ class Trainer():
             output_valid = output[self.idx_valid]
             labels_valid = self.labels[self.idx_valid]
 
-            loss_train = loss_train(output_train, labels_train)
+            loss_train = criterion(output_train, labels_train)
+
             loss_train.backward()
             optimizer.step()
 
-            loss_valid = loss_valid(output_valid, labels_valid)
+            loss_valid = criterion(output_valid, labels_valid).item()
+
+            print('Epoch {}'.format(epoch + 1))
+            print('\t Training loss: {} \t Validation loss: {}'.format(loss_train.item(), loss_valid))
+            print()
