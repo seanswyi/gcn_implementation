@@ -7,4 +7,5 @@ Official paper link: [_Semi-Supervised Classification with Graph Convolutional N
 
 ### Cora Dataset
 
+
 ![fig](https://github.com/seankala/gcn_implementation/blob/master/figures/gcn_cora_epoch200.png)
