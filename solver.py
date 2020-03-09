@@ -71,10 +71,10 @@ class Solver():
             acc_train_hist = np.array(acc_train_hist)
             acc_valid_hist = np.array(acc_valid_hist)
 
-            np.save(file='./results/loss_train_hist.npy', arr=loss_train_hist)
-            np.save(file='./results/loss_valid_hist.npy', arr=loss_valid_hist)
-            np.save(file='./results/acc_train_hist.npy', arr=acc_train_hist)
-            np.save(file='./results/acc_valid_hist.npy', arr=acc_valid_hist)
+            np.save(file='./results/loss_train_hist_epochs{}.npy'.format(self.num_epochs), arr=loss_train_hist)
+            np.save(file='./results/loss_valid_hist_epochs{}.npy'.format(self.num_epochs), arr=loss_valid_hist)
+            np.save(file='./results/acc_train_hist_epochs{}.npy'.format(self.num_epochs), arr=acc_train_hist)
+            np.save(file='./results/acc_valid_hist_epochs{}.npy'.format(self.num_epochs), arr=acc_valid_hist)
 
         return criterion, best_model
 
